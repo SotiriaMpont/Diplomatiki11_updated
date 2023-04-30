@@ -350,4 +350,24 @@ mydatabase.close()
    
 #Βημα1: Φτιάχνω ένα dataframe απο τα 4 που'χω (παίρνει μονο τα colums ΠΟΥ ΘΕΛΩ απο τα dataframes που έχουν κοινά distributor_id, shift )
 
+# merge the metrics_customer and metrics_store dataframes on distributor_id and shift columns
+merged_df = pd.merge(metrics_costumer_dataframe, metrics_store_dataframe, on=['distributor_id', 'shift'])
+
+# merge the merged_df with the metrics_driver dataframes on distributor_id and shift columns
+merged_df = pd.merge(merged_df, metrics_dataframe, on=['distributor_id', 'shift'])
+
+# merge the merged_df with the metrics_vehicle dataframes on distributor_id and shift columns
+merged_df = pd.merge(merged_df, metrics_company_dataframe, on=['distributor_id', 'shift'])
+
+# select the desired columns from merged_df and group by distributor and shift
+grouped_df = merged_df[['distributor_id', 'shift', 'total_rate_costumer', 'total_rate_store', 'total_rate_company', 'metrics_rate']].groupby(['distributor_id', 'shift']).sum()
+
+# add a new column 'total' by summing up the other columns
+grouped_df['total'] = grouped_df.sum(axis=1)
+
+# reset index and display the result
+dataframe5 = grouped_df.reset_index()
+print(dataframe5)
+
+#Exw ton pinaka total (pou exei thn sunoliki metriki )
 
