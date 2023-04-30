@@ -371,3 +371,24 @@ print(dataframe5)
 
 #Exw ton pinaka total (pou exei thn sunoliki metriki )
 
+for index, row in dataframe5.iterrows():   
+
+   
+    mydatabase = mysql.connector.connect(
+    host="localhost",
+    user="root",
+    password="123456789",
+    database="diplomatiki11"
+  )
+
+    
+    cursor = mydatabase.cursor()
+   
+    update_query = "UPDATE metrics SET total_rate=%s WHERE distributor_id = %s AND shift = %s"
+    values = (row['total'],row['distributor_id'], row['shift'])
+    cursor.execute(update_query, values)
+
+# commit the changes and close the connection
+mydatabase.commit()
+mydatabase.close()
+
